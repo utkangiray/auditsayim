@@ -1,0 +1,38 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:t="sap.ui.table">
+    <Dialog contentWidth="800px" horizontalScrolling="true" showHeader="true" state="None" stretch="false" title="{i18n>ekipmanAra}" type="Standard" verticalScrolling="true">
+        <content id="TreeTableContent">
+            <form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsM="1" columnsL="1">
+                <form:content>
+                    <Label xmlns="sap.m" text="{i18n>teknikBirimAdi}" design="Bold" />
+                    <Input width="100%" value="{tb>/teknikBirimInput}" id="idTbInput" liveChange="onSearchTb" />
+                </form:content>
+            </form:SimpleForm>
+
+            <!-- Tree Table -->
+            <t:TreeTable id="TreeTableBasic" rows="{path:'tb>/TeknikBirimTree', parameters: {arrayNames:['subList']}}" selectionMode="Single" enableSelectAll="false" ariaLabelledBy="title">
+                <t:columns>
+                    <t:Column>
+                        <Label text="ID" />
+                        <t:template>
+                            <Text text="{tb>Tplnr}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                    <t:Column>
+                        <Label text="Text" />
+                        <t:template>
+                            <Text text="{tb>Pltxt}" wrapping="false" />
+                        </t:template>
+                    </t:Column>
+                </t:columns>
+            </t:TreeTable>
+        </content>
+        <beginButton />
+        <buttons>
+            <Button text="{i18n>sec}" press="tbSecClick" />
+            <Button text="{i18n>kapat}" press="tbDialogClose" />
+        </buttons>
+        <customHeader />
+        <endButton />
+        <subHeader />
+    </Dialog>
+</core:FragmentDefinition>
