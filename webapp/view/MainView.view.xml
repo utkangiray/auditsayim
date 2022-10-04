@@ -3,14 +3,14 @@
         <pages>
             <Page title="{i18n>title}">
                 <content>
-                    <form:Form width="auto" editable="true">
+                    <form:Form width="100%" editable="true">
                         <form:title />
                         <form:formContainers>
                             <form:FormContainer>
                                 <form:formElements>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>teknikBirim}" design="Bold" width="100%" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>teknikBirim}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
                                             <Input value="{/teknikBirimInput}" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
@@ -35,10 +35,10 @@
                                     </form:FormElement>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>ekipmanTipi}" design="Bold" width="100%" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>ekipmanTipi}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <ComboBox id="id_ekipmantipi4" loadItems="onGetEkipmanTipi" selectedKey="{path:'mainModel>/form/IEqtyp'}" width="30%" items="{path:'mainModel>/EquipmentTypeList'}" showSecondaryValues="true">
+                                            <ComboBox id="id_ekipmantipi4" loadItems="onGetEkipmanTipi" selectedKey="{path:'mainModel>/form/IEqtyp'}" width="100%" items="{path:'mainModel>/EquipmentTypeList'}" showSecondaryValues="true">
                                                 <core:ListItem key="{mainModel>Eqtyp}" text="{mainModel>Typtx}" additionalText="{mainModel>Eqtyp}" />
                                             </ComboBox>
                                         </form:fields>
@@ -48,7 +48,7 @@
                                             <Label text="{i18n>nesneTuru}" design="Bold" width="100%" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <ComboBox id="id_nesneturu4" loadItems="onNesneTuru" selectedKey="{path:'mainModel>/form/IEqart'}" width="30%" items="{mainModel>/TechnicalObjectTypeList}" showSecondaryValues="true">
+                                            <ComboBox id="id_nesneturu4" loadItems="onNesneTuru" selectedKey="{path:'mainModel>/form/IEqart'}" width="100%" items="{mainModel>/TechnicalObjectTypeList}" showSecondaryValues="true">
                                                 <core:ListItem key="{mainModel>Eqart}" text="{mainModel>Eartx}" additionalText="{mainModel>Eqart}" />
                                             </ComboBox>
                                         </form:fields>

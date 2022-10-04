@@ -1,1 +1,9 @@
 /* Enter your custom styles here */
+#__layout0 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#__container1--Grid .sapUiRespGridBreak {
+  width: 34%;
+}

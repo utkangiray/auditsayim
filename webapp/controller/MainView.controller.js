@@ -1,9 +1,9 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller"],
+  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel"],
   /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-  function(Controller) {
+  function(Controller, JSONModel) {
     "use strict";
 
     return Controller.extend("com.audit.ictas.auditsayim.controller.MainView", {
@@ -25,8 +25,20 @@ sap.ui.define(
           );
           this.getView().addDependent(this._oTBDialog);
         }
+        jQuery.sap.delayedCall(
+          0,
+          this,
+          function() {
+            that._oTBDialog.open();
+            that._oTBDialog.setBusy(true);
+            setTimeout(function() {
+              that._oTBDialog.setBusy(false);
+            }, 1000);
+          }.bind(this)
+        );
       },
       onTeknikBirim: function() {
+        var that = this;
         this.oDataModel.read("/GetEkipmanInitialSet", {
           filters: [
             new sap.ui.model.Filter("IArbpl", sap.ui.model.FilterOperator.EQ, "value"),
@@ -38,11 +50,42 @@ sap.ui.define(
           },
           success(oData, oResponse) {
             var data = oData.results[0].TeknikBirimSet.results;
+            that.transformToTree(data);
           },
           error(oError) {
             debugger;
           }
         });
+      },
+
+      transformToTree: function(list) {
+        var map = {},
+          node,
+          roots = [],
+          i;
+
+        for (i = 0; i < list.length; i += 1) {
+          map[list[i].Tplnr] = i; // initialize the map
+          list[i].subList = []; // initialize the children
+        }
+
+        for (i = 0; i < list.length; i += 1) {
+          node = list[i];
+          if (node.Tplma !== "") {
+            // if you have dangling branches check that map[node.parentId] exists
+            list[map[node.Tplma]].subList.push(node);
+          } else {
+            roots.push(node);
+          }
+        }
+
+        var jsonModel = new JSONModel({
+          TeknikBirimTree: roots,
+          TeknikBirimList: list
+        });
+        this.getView().setModel(jsonModel, "tb");
+        this.getView().getModel("tb").refresh();
+        return roots;
       },
 
       onGetEkipmanTipi: function(oEvent) {
