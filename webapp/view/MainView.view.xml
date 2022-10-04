@@ -10,10 +10,10 @@
                                 <form:formElements>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>teknikBirim}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>teknikBirim}" design="Bold" width="auto" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <Input value="{/teknikBirimInput}" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
+                                            <Input value="{/teknikBirimInput}" width="100%" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
                                                 <suggestionColumns>
                                                     <Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
                                                         <Label text="ID" />
@@ -35,7 +35,7 @@
                                     </form:FormElement>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>ekipmanTipi}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>ekipmanTipi}" design="Bold" width="auto" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
                                             <ComboBox id="id_ekipmantipi4" loadItems="onGetEkipmanTipi" selectedKey="{path:'mainModel>/form/IEqtyp'}" width="100%" items="{path:'mainModel>/EquipmentTypeList'}" showSecondaryValues="true">
@@ -45,7 +45,7 @@
                                     </form:FormElement>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>nesneTuru}" design="Bold" width="100%" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>nesneTuru}" design="Bold" width="auto" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
                                             <ComboBox id="id_nesneturu4" loadItems="onNesneTuru" selectedKey="{path:'mainModel>/form/IEqart'}" width="100%" items="{mainModel>/TechnicalObjectTypeList}" showSecondaryValues="true">
@@ -58,7 +58,7 @@
                                             <Label design="Bold" width="100%" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <Button text="{i18n>arama}" width="150px" press="searchClick" />
+                                            <Button text="{i18n>arama}" width="100%" press="searchClick" />
                                         </form:fields>
                                     </form:FormElement>
                                 </form:formElements>
@@ -70,6 +70,8 @@
                             <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="2" labelSpanM="6" labelSpanS="6" />
                         </form:layout>
                     </form:Form>
+
+
                     <ScrollContainer height="auto" width="100%" horizontal="true" vertical="true" focusable="true">
                         <content>
                             <Table id="productsTable" fixedLayout="false" noDataText="Veri Yok" mode="MultiSelect" inset="false" growing="true" showSeparators="All" rowingScrollToLoad="true" growingThreshold="6" growingTriggerText="Devamını Göster" items="{ path: '/ZimmetList' }" getGrowingScrollToLoad="true">
