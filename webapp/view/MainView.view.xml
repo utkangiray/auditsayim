@@ -3,7 +3,7 @@
         <pages>
             <Page title="{i18n>title}">
                 <content>
-                    <form:Form width="100%" editable="true">
+                    <form:Form width="auto" editable="true">
                         <form:title />
                         <form:formContainers>
                             <form:FormContainer>
@@ -13,7 +13,7 @@
                                             <Label text="{i18n>teknikBirim}" design="Bold" width="100%" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <Input value="{/teknikBirimInput}" class="sapUiSmallMargin" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
+                                            <Input value="{/teknikBirimInput}" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
                                                 <suggestionColumns>
                                                     <Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
                                                         <Label text="ID" />
