@@ -4,7 +4,7 @@
             <form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsM="1" columnsL="1">
                 <form:content>
                     <Label xmlns="sap.m" text="{i18n>teknikBirimAdi}" design="Bold" />
-                    <Input width="100%" value="{tb>/teknikBirimInput}" id="idTbInput" liveChange="onSearchTb" />
+                    <Input width="100%" id="idTbInput" liveChange="onSearchTb" />
                 </form:content>
             </form:SimpleForm>
 

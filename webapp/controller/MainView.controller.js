@@ -11,6 +11,25 @@ sap.ui.define(
         this.oDataModel = this.getOwnerComponent().getModel();
         this.oMainModel = this.getOwnerComponent().getModel("mainModel");
         this.getView().setModel(this.oMainModel, "mainModel");
+
+        var formData = {
+          IEqart: "",
+          IEqtyp: "",
+          teknikBirimInput: ""
+        };
+        this.getView().getModel("mainModel").setProperty("/form", formData);
+        var jsonModel = new JSONModel({
+          TeknikBirimTree: [],
+          TeknikBirimList: []
+        });
+        this.getView().setModel(jsonModel, "tb");
+
+        var that = this;
+        if (sap.ui.Device.system.desktop === true) {
+          that.getView().byId("idForm").setWidth("50%");
+        } else if (sap.ui.Device.system.phone === true) {
+          that.getView().byId("idForm").setWidth("100%");
+        }
       },
 
       handleTBvalueHelp: function(oEvent) {
@@ -50,7 +69,9 @@ sap.ui.define(
           },
           success(oData, oResponse) {
             var data = oData.results[0].TeknikBirimSet.results;
-            that.transformToTree(data);
+            that.transformToTree(data).then(function() {
+              that.getView().getModel("tb").setProperty("/TeknikBirimList", data);
+            });
           },
           error(oError) {
             debugger;
@@ -59,33 +80,37 @@ sap.ui.define(
       },
 
       transformToTree: function(list) {
-        var map = {},
-          node,
-          roots = [],
-          i;
+        return new Promise(
+          function(resolve, reject) {
+            var map = {},
+              node,
+              roots = [],
+              i;
 
-        for (i = 0; i < list.length; i += 1) {
-          map[list[i].Tplnr] = i; // initialize the map
-          list[i].subList = []; // initialize the children
-        }
+            for (i = 0; i < list.length; i += 1) {
+              map[list[i].Tplnr] = i; // initialize the map
+              list[i].subList = []; // initialize the children
+            }
 
-        for (i = 0; i < list.length; i += 1) {
-          node = list[i];
-          if (node.Tplma !== "") {
-            // if you have dangling branches check that map[node.parentId] exists
-            list[map[node.Tplma]].subList.push(node);
-          } else {
-            roots.push(node);
-          }
-        }
+            for (i = 0; i < list.length; i += 1) {
+              node = list[i];
+              if (node.Tplma !== "") {
+                // if you have dangling branches check that map[node.parentId] exists
+                list[map[node.Tplma]].subList.push(node);
+              } else {
+                roots.push(node);
+              }
+            }
 
-        var jsonModel = new JSONModel({
-          TeknikBirimTree: roots,
-          TeknikBirimList: list
-        });
-        this.getView().setModel(jsonModel, "tb");
-        this.getView().getModel("tb").refresh();
-        return roots;
+            // var jsonModel = new JSONModel({
+            //   TeknikBirimTree: roots
+            //   //  TeknikBirimList: list
+            // });
+            // this.getView().setModel(jsonModel, "tb");
+            this.getView().getModel("tb").setProperty("/TeknikBirimTree", roots);
+            resolve(roots);
+          }.bind(this)
+        );
       },
 
       onGetEkipmanTipi: function(oEvent) {
@@ -141,6 +166,108 @@ sap.ui.define(
             }
           },
           error(oError) {
+            try {
+              var errMessage = JSON.parse(oError.responseText);
+              errMessage = errMessage.error.message.value;
+            } catch (e) {
+              errMessage = oError.message;
+            }
+            sap.m.MessageBox.alert(errMessage, {
+              icon: sap.m.MessageBox.Icon.ERROR,
+              title: "Hata Oluştu!"
+            });
+          }
+        });
+      },
+      tbSecClick: function() {
+        var table = sap.ui.core.Fragment.byId("dialogTBValueH", "TreeTableBasic");
+        var selectedIndex = table.getSelectedIndex();
+        var data = table.getContextByIndex(selectedIndex).getObject();
+        this.getView().getModel("mainModel").setProperty("/form/teknikBirimInput", data.Tplnr);
+        this.tbDialogClose();
+      },
+      tbDialogClose: function() {
+        this._oTBDialog.close();
+      },
+
+      onSearchTb: function(e) {
+        var tbInput = sap.ui.core.Fragment.byId("dialogTBValueH", "idTbInput").getValue() || "";
+
+        var data = this.getView().getModel("tb").getData();
+
+        var match = [];
+        var matchTop = [];
+
+        match = _.filter(data.TeknikBirimList, function(item) {
+          return item.Pltxt.match(new RegExp(tbInput, "i")) !== null;
+        });
+
+        _.forEach(match, function(o) {
+          if (o.Tplma.indexOf("-") > -1) {
+            var splitList = o.Tplnr.split("-");
+            var temp = splitList[0];
+            for (var i = 1; i < splitList.length; i++) {
+              matchTop = _.uniqBy(
+                _.concat(
+                  matchTop,
+                  _.filter(data.TeknikBirimList, {
+                    Tplnr: temp
+                  })
+                ),
+                "Tplnr"
+              );
+              temp = temp + "-" + splitList[i];
+            }
+          } else {
+            matchTop = _.filter(data.TeknikBirimList, {
+              Tplnr: o.Tplma
+            });
+          }
+        });
+
+        var list = _.uniqBy(_.concat(matchTop, match), "Tplnr");
+
+        this.transformToTree(list).then(response => {
+          var teknikBirimTree = response;
+          data.TeknikBirimTree = teknikBirimTree;
+        });
+
+        this.getView().getModel().refresh();
+
+        //var oTreeTable = this.byId("TreeTableBasic");
+        var oTreeTable = sap.ui.core.Fragment.byId("dialogTBValueH", "TreeTableBasic");
+        oTreeTable.expandToLevel(1);
+      },
+      searchClick: function(oEvent) {
+        var that = this;
+
+        var filterData = this.getView().getModel("mainModel").getData().form;
+
+        sap.ui.core.BusyIndicator.show(0);
+
+        this.oDataModel.read("/GetZimmetListSet", {
+          filters: [
+            new sap.ui.model.Filter(
+              "ITplnr",
+              sap.ui.model.FilterOperator.EQ,
+              filterData.teknikBirimInput
+            ), //teknik birim
+            new sap.ui.model.Filter("IEqtyp", sap.ui.model.FilterOperator.EQ, filterData.IEqtyp), //ekipman tipi
+            new sap.ui.model.Filter("IEqart", sap.ui.model.FilterOperator.EQ, filterData.IEqart)
+          ],
+          success(oData, oResponse) {
+            sap.ui.core.BusyIndicator.hide(0);
+
+            var data = oData.results;
+            if (data.length > 0) {
+              that.oMainModel.setProperty("/ZimmetList", data);
+              that.oMainModel.setProperty("/form/searchListCount", data.length);
+            } else {
+              that.oMainModel.setProperty("/ZimmetList", []);
+            }
+          },
+          error(oError) {
+            sap.ui.core.BusyIndicator.hide(0);
             try {
               var errMessage = JSON.parse(oError.responseText);
               errMessage = errMessage.error.message.value;

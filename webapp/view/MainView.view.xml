@@ -3,17 +3,17 @@
         <pages>
             <Page title="{i18n>title}">
                 <content>
-                    <form:Form width="100%" editable="true">
+                    <form:Form width="100%" id="idForm" editable="true">
                         <form:title />
                         <form:formContainers>
                             <form:FormContainer>
                                 <form:formElements>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>teknikBirim}" design="Bold" width="auto" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>teknikBirim}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <Input value="{/teknikBirimInput}" width="100%" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
+                                            <Input value="{mainModel>/form/teknikBirimInput}" width="100%" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
                                                 <suggestionColumns>
                                                     <Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
                                                         <Label text="ID" />
@@ -35,7 +35,7 @@
                                     </form:FormElement>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>ekipmanTipi}" design="Bold" width="auto" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>ekipmanTipi}" design="Bold" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
                                             <ComboBox id="id_ekipmantipi4" loadItems="onGetEkipmanTipi" selectedKey="{path:'mainModel>/form/IEqtyp'}" width="100%" items="{path:'mainModel>/EquipmentTypeList'}" showSecondaryValues="true">
@@ -45,7 +45,7 @@
                                     </form:FormElement>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label text="{i18n>nesneTuru}" design="Bold" width="auto" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label text="{i18n>nesneTuru}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
                                             <ComboBox id="id_nesneturu4" loadItems="onNesneTuru" selectedKey="{path:'mainModel>/form/IEqart'}" width="100%" items="{mainModel>/TechnicalObjectTypeList}" showSecondaryValues="true">
@@ -74,10 +74,10 @@
 
                     <ScrollContainer height="auto" width="100%" horizontal="true" vertical="true" focusable="true">
                         <content>
-                            <Table id="productsTable" fixedLayout="false" noDataText="Veri Yok" mode="MultiSelect" inset="false" growing="true" showSeparators="All" rowingScrollToLoad="true" growingThreshold="6" growingTriggerText="Devamını Göster" items="{ path: '/ZimmetList' }" getGrowingScrollToLoad="true">
+                            <Table id="productsTable" fixedLayout="false" noDataText="Veri Yok" mode="MultiSelect" inset="false" growing="true" showSeparators="All" rowingScrollToLoad="true" growingThreshold="6" growingTriggerText="Devamını Göster" items="{ path: 'mainModel>/ZimmetList' }" getGrowingScrollToLoad="true">
                                 <headerToolbar>
-                                    <OverflowToolbar>
-                                        <Title text="{i18n>toplamKayitSayisi}: {/form/searchListCount}" />
+                                    <OverflowToolbar design="Info">
+                                        <Title text="{i18n>toplamKayitSayisi}: {mainModel>/form/searchListCount}" />
                                         <ToolbarSpacer />
                                         <Button icon="sap-icon://excel-attachment" press="excelDownload" type="Default" text="{i18n>excelIndir}">
                                             <layoutData>
@@ -163,19 +163,19 @@
                                 <items>
                                     <ColumnListItem>
                                         <cells>
-                                            <ObjectIdentifier title="{ path : 'Equnr', type : 'sap.ui.model.odata.type.String', constraints: { isDigitSequence : true } }" />
-                                            <ObjectIdentifier title="{Shtxt}" />
-                                            <ObjectIdentifier title="{Invnr}" />
-                                            <ObjectIdentifier title="{Anlnr}" />
-                                            <ObjectIdentifier title="{Tplnr}" />
-                                            <ObjectIdentifier title="{TplnrShtxt}" />
-                                            <ObjectIdentifier title="{UserStatusCode}" />
-                                            <ObjectIdentifier title="{Kostl}" />
-                                            <ObjectIdentifier title="{Tarih}" />
+                                            <ObjectIdentifier title="{ path : 'mainModel>Equnr', type : 'sap.ui.model.odata.type.String', constraints: { isDigitSequence : true } }" />
+                                            <ObjectIdentifier title="{mainModel>Shtxt}" />
+                                            <ObjectIdentifier title="{mainModel>Invnr}" />
+                                            <ObjectIdentifier title="{mainModel>Anlnr}" />
+                                            <ObjectIdentifier title="{mainModel>Tplnr}" />
+                                            <ObjectIdentifier title="{mainModel>TplnrShtxt}" />
+                                            <ObjectIdentifier title="{mainModel>UserStatusCode}" />
+                                            <ObjectIdentifier title="{mainModel>Kostl}" />
+                                            <ObjectIdentifier title="{mainModel>Tarih}" />
                                             <!--<ObjectIdentifier title="{PartnerKey}"/>-->
                                             <!--<ObjectIdentifier title="{NameListMh}"/>-->
-                                            <ObjectIdentifier title="{NameListMf}" />
-                                            <ObjectIdentifier title="{Charact}" />
+                                            <ObjectIdentifier title="{mainModel>NameListMf}" />
+                                            <ObjectIdentifier title="{mainModel>Charact}" />
                                             <!--<Input value="{MailAdresi}" editable="{/editableInput}"/>-->
                                         </cells>
                                     </ColumnListItem>

@@ -83,6 +83,11 @@
         {
           "uri": "css/style.css"
         }
+      ],
+      "js": [
+        {
+          "uri": "thirdParty/lodash/lodash.js"
+        }
       ]
     },
     "routing": {
