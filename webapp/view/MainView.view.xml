@@ -13,7 +13,7 @@
                                             <Label text="{i18n>teknikBirim}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <Input value="{mainModel>/form/teknikBirimInput}" width="100%" showSuggestion="true" showValueHelp="true" valueHelpRequest="handleTBvalueHelp" suggestionRows="{/TeknikBirimList}">
+                                            <Input value="{mainModel>/form/teknikBirimInput}" width="100%" showValueHelp="true" valueHelpRequest="handleTBvalueHelp">
                                                 <suggestionColumns>
                                                     <Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
                                                         <Label text="ID" />

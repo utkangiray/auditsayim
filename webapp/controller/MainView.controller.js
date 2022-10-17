@@ -1,14 +1,15 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel"],
+  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel", "sap/m/MessageToast"],
   /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-  function(Controller, JSONModel) {
+  function(Controller, JSONModel, MessageToast) {
     "use strict";
 
     return Controller.extend("com.audit.ictas.auditsayim.controller.MainView", {
       onInit: function() {
         this.oDataModel = this.getOwnerComponent().getModel();
+        this.oDataModel.setUseBatch(false);
         this.oMainModel = this.getOwnerComponent().getModel("mainModel");
         this.getView().setModel(this.oMainModel, "mainModel");
 
@@ -278,6 +279,98 @@ sap.ui.define(
               icon: sap.m.MessageBox.Icon.ERROR,
               title: "Hata Oluştu!"
             });
+          }
+        });
+      },
+
+      zimmetKaydetClick: function(oEvent) {
+        this.onSorIsYeri();
+
+        if (!this._popUpDialog) {
+          this._popUpDialog = sap.ui.xmlfragment(
+            "popUpDialog",
+            "com.audit.ictas.auditsayim.view.dialog.PopupDialog",
+            this
+          );
+          this.getView().addDependent(this._popUpDialog);
+        }
+        jQuery.sap.delayedCall(
+          0,
+          this,
+          function() {
+            this._popUpDialog.open();
+          }.bind(this)
+        );
+      },
+
+      onSorIsYeri: function() {
+        var that = this;
+        this.oDataModel.read("/GetEkipmanInitialSet", {
+          filters: [
+            new sap.ui.model.Filter("EtWorkcenterAll", sap.ui.model.FilterOperator.EQ, "X"),
+            new sap.ui.model.Filter("Type", sap.ui.model.FilterOperator.EQ, "X")
+          ],
+          urlParameters: {
+            $expand: "WorkCenterAllSet"
+          },
+          success: function(oData, oResponse) {
+            var x = 2;
+            that.oMainModel.setProperty(
+              "/WorkCenterAllList",
+              oData.results[0].WorkCenterAllSet.results
+            );
+            that.oMainModel.setProperty(
+              "/WorkCenterAllListSelected",
+              oData.results[0].WorkCenterAllSet.results
+            );
+          },
+          error: function(oError) {}
+        });
+      },
+      dialogClose: function() {
+        this._popUpDialog.close();
+      },
+
+      dialogSave: function(oEvent) {
+        var that = this;
+        var selectedRowContextPaths = this.byId("productsTable").getSelectedContextPaths();
+        var model = this.getView().getModel("mainModel");
+
+        var items = {};
+        var saveAudit = [];
+        for (var i in selectedRowContextPaths) {
+          var data = model.getProperty(selectedRowContextPaths[i]);
+          items.IArbpl = this.oMainModel.getData().Objid;
+          items.IEqunr;
+          items.IAudit = "X";
+          items.ILongtext = this.oMainModel.getData().IlongText;
+          items.ITplnr = data.Tplnr;
+          let Equnr = { IEqunr: data.Equnr };
+          saveAudit.push(Equnr);
+        }
+        items.saveAudit = saveAudit;
+        sap.ui.core.BusyIndicator.show(0);
+        this.oDataModel.create("/SaveAuditSet", items, {
+          async: true,
+          success: function(oData, oResponse) {
+            sap.ui.core.BusyIndicator.hide(0);
+            var hdrMessage = oResponse.headers["sap-message"];
+            var hdrMessageObject = JSON.parse(hdrMessage);
+            MessageToast.show(hdrMessageObject);
+            that.dialogClose();
+          },
+          error: function(oError) {
+            try {
+              var errMessage = JSON.parse(oError.responseText);
+              errMessage = errMessage.error.message.value;
+            } catch (e) {
+              errMessage = oError.message;
+            }
+            sap.m.MessageBox.alert(errMessage, {
+              icon: sap.m.MessageBox.Icon.ERROR,
+              title: "Hata Oluştu!"
+            });
+            sap.ui.core.BusyIndicator.hide(0);
           }
         });
       }

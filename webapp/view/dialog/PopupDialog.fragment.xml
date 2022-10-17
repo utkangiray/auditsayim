@@ -1,0 +1,37 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:form="sap.ui.layout.form" xmlns:core="sap.ui.core">
+    <Dialog contentWidth="800px" horizontalScrolling="true" showHeader="true" state="None" stretch="false" title="{i18n>sayimOlustur}" type="Standard" verticalScrolling="true">
+        <content>
+            <form:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsM="1" columnsL="1">
+                <form:content>
+                    <Label xmlns="sap.m" text="{i18n>sorIsYeri}" design="Bold" labelFor="gerberid_input" />
+                    <!--<Input width="100%" id="idSorIsyeri" value="{/IArbpl}"/>-->
+                    <!--<Input id="idSorIsyeri" type="Text" placeholder="{i18n>isyerigiriniz}" showSuggestion="true" suggest="handleSuggest" suggestionItems="{/SorIsyeriList}">
+						<suggestionItems>
+							<core:Item text="{Arbpl}"/>
+						</suggestionItems>
+					</Input>-->
+                    <!--<ComboBox  id="idSorIsyeri" maxWidth="100%" items="{path:'/SorIsyeriList'}" showSecondaryValues="true" placeholder="{i18n>isyerigiriniz}" >-->
+                    <!--	<core:ListItem key="{Objid}" text="{Ktext}" additionalText="{Objid}"/>-->
+                    <!--</ComboBox>-->
+                    <ComboBox id="idSorIsyeri" selectedKey="{path:'mainModel>/Objid'}" maxWidth="100%" items="{mainModel>/WorkCenterAllListSelected}" showSecondaryValues="true">
+                        <core:ListItem key="{mainModel>Arbpl}" text="{mainModel>Ktext}" additionalText="{mainModel>Arbpl}" />
+                    </ComboBox>
+                    <!--<ComboBox selectedKey="{path:'/form/Tplnr'}" maxWidth="100%" items="{path:'/SorIsyeriList'}">-->
+                    <!--	<core:ListItem key="{Arbpl}" text="{Arbpl}"/>-->
+                    <!--</ComboBox>-->
+                    <Label xmlns="sap.m" text="{i18n>uzunMetin}" design="Bold" labelFor="gerberid_input" />
+                    <!--<Input width="100%" id="idUzunMetin" value="{/IlongText}"/>-->
+                    <TextArea id="idUzunMetin" value="{mainModel>/IlongText}" placeholder="{i18n>metingiriniz}" width="100%" height="90px" />
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <beginButton />
+        <buttons>
+            <Button text="{i18n>kaydet}" press="dialogSave" />
+            <Button text="{i18n>kapat}" press="dialogClose" />
+        </buttons>
+        <customHeader />
+        <endButton />
+        <subHeader />
+    </Dialog>
+</core:FragmentDefinition>
