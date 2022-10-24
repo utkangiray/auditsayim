@@ -26,11 +26,11 @@ sap.ui.define(
         this.getView().setModel(jsonModel, "tb");
 
         var that = this;
-        if (sap.ui.Device.system.desktop === true) {
-          that.getView().byId("idForm").setWidth("50%");
-        } else if (sap.ui.Device.system.phone === true) {
-          that.getView().byId("idForm").setWidth("100%");
-        }
+        // if (sap.ui.Device.system.desktop === true) {
+        //   that.getView().byId("idForm").setWidth("50%");
+        // } else if (sap.ui.Device.system.phone === true) {
+        //   that.getView().byId("idForm").setWidth("100%");
+        // }
       },
 
       handleTBvalueHelp: function(oEvent) {

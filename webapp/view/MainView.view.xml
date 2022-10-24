@@ -6,6 +6,7 @@
                     <form:Form width="100%" id="idForm" editable="true">
                         <form:title />
                         <form:formContainers>
+                            <form:FormContainer visible="false"></form:FormContainer>
                             <form:FormContainer>
                                 <form:formElements>
                                     <form:FormElement>
@@ -38,7 +39,7 @@
                                             <Label text="{i18n>ekipmanTipi}" design="Bold" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <ComboBox id="id_ekipmantipi4" loadItems="onGetEkipmanTipi" selectedKey="{path:'mainModel>/form/IEqtyp'}" width="100%" items="{path:'mainModel>/EquipmentTypeList'}" showSecondaryValues="true">
+                                            <ComboBox id="id_ekipmantipi4" loadItems="onGetEkipmanTipi" selectedKey="{path:'mainModel>/form/IEqtyp'}" items="{path:'mainModel>/EquipmentTypeList'}" showSecondaryValues="true">
                                                 <core:ListItem key="{mainModel>Eqtyp}" text="{mainModel>Typtx}" additionalText="{mainModel>Eqtyp}" />
                                             </ComboBox>
                                         </form:fields>
@@ -48,30 +49,38 @@
                                             <Label text="{i18n>nesneTuru}" design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <ComboBox id="id_nesneturu4" loadItems="onNesneTuru" selectedKey="{path:'mainModel>/form/IEqart'}" width="100%" items="{mainModel>/TechnicalObjectTypeList}" showSecondaryValues="true">
+                                            <ComboBox id="id_nesneturu4" loadItems="onNesneTuru" selectedKey="{path:'mainModel>/form/IEqart'}" items="{mainModel>/TechnicalObjectTypeList}" showSecondaryValues="true">
                                                 <core:ListItem key="{mainModel>Eqart}" text="{mainModel>Eartx}" additionalText="{mainModel>Eqart}" />
                                             </ComboBox>
                                         </form:fields>
                                     </form:FormElement>
                                     <form:FormElement>
                                         <form:label>
-                                            <Label design="Bold" width="100%" required="false" textAlign="Begin" textDirection="Inherit" />
+                                            <Label design="Bold" required="false" textAlign="Begin" textDirection="Inherit" />
                                         </form:label>
                                         <form:fields>
-                                            <Button text="{i18n>arama}" width="100%" press="searchClick" />
+                                            <Button text="{i18n>arama}" width="100%" press="searchClick"></Button>
                                         </form:fields>
                                     </form:FormElement>
                                 </form:formElements>
-                                <form:title />
                             </form:FormContainer>
-
                         </form:formContainers>
                         <form:layout>
-                            <form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="2" labelSpanM="6" labelSpanS="6" />
+                            <form:ResponsiveGridLayout labelSpanXL="4"
+                                labelSpanL="3"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                adjustLabelSpan="false"
+                                emptySpanXL="0"
+                                emptySpanL="4"
+                                emptySpanM="0"
+                                emptySpanS="0"
+                                columnsXL="2"
+                                columnsL="1"
+                                columnsM="1"
+                                singleContainerFullSize="false" />
                         </form:layout>
                     </form:Form>
-
-
                     <ScrollContainer height="auto" width="100%" horizontal="true" vertical="true" focusable="true">
                         <content>
                             <Table id="productsTable" fixedLayout="false" noDataText="Veri Yok" mode="MultiSelect" inset="false" growing="true" showSeparators="All" rowingScrollToLoad="true" growingThreshold="6" growingTriggerText="Devamını Göster" items="{ path: 'mainModel>/ZimmetList' }" getGrowingScrollToLoad="true">
@@ -79,7 +88,7 @@
                                     <OverflowToolbar design="Info">
                                         <Title text="{i18n>toplamKayitSayisi}: {mainModel>/form/searchListCount}" />
                                         <ToolbarSpacer />
-                                        <Button icon="sap-icon://excel-attachment" press="excelDownload" type="Default" text="{i18n>excelIndir}">
+                                        <Button icon="sap-icon://excel-attachment" press="excelDownload" type="Default" text="Excel İndir">
                                             <layoutData>
                                                 <OverflowToolbarLayoutData priority="NeverOverflow" />
                                             </layoutData>
@@ -189,7 +198,7 @@
                         <content>
                             <ToolbarSpacer />
                             <!--<Button text="Düzenle" width="130px" id="idZimmetDuzenle" visible="{= ${/editableInput} === false }" icon="sap-icon://edit" press="zimmetDuzenleClick" type="Emphasized"/>-->
-                            <Button text="{i18n>kaydet}" width="130px" id="idZimmetKaydet" icon="sap-icon://save" press="zimmetKaydetClick" type="Accept" />
+                            <Button text="Kaydet" width="130px" id="idZimmetKaydet" icon="sap-icon://save" press="zimmetKaydetClick" type="Accept" />
                             <!--<Button text="İptal" width="130px" id="idZimmetIptal" visible="{/editableInput}" icon="sap-icon://sys-cancel-2" press="zimmetIptalClick" type="Reject"/>-->
                         </content>
                     </OverflowToolbar>

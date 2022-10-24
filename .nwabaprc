@@ -1,0 +1,12 @@
+{
+  "base": "./webapp",
+  "conn_usestrictssl": false,
+  "conn_server": "http://192.168.10.201:8000/",
+  "conn_client": "100",
+  "conn_user": "GOLVDANISMAN",
+  "conn_password": "Golive.22",
+  "abap_transport": "IFDK900092",
+  "abap_package": "ZFIORI",
+  "abap_bsp": "ZFIO_AUDIT",
+  "abap_bsp_text": "Audit Sayım"
+}

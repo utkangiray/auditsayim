@@ -45,7 +45,6 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-        "sap.f": {},
         "sap.suite.ui.generic.template": {},
         "sap.ui.comp": {},
         "sap.ui.generic.app": {},
